@@ -43,6 +43,15 @@ public class Controller {
     public void onUpdateNodeButton(ActionEvent actionEvent) {
         String name = updateName.getText();
         String destinyName = updateDestiny.getText();
+        String distance = updateDistance.getText();
+
+        if (destinyName.equals(name)) {
+            popupSet("Destiny can't be the same as the origin");
+            return;
+        }
+
+        // FIXME: 05.06.2022 If destiny node exists and has already a distance with other node, set it's distance to already existing distance or overwrite the both
+
 
         int nodeInt = getIndexInArray(name);
         int destinyNodeInt = getIndexInArray(destinyName);
@@ -69,9 +78,8 @@ public class Controller {
                 popupSet("Please, set valid Number Type (" + updateDistance.getText() + ")");
             }
         }
-
     }
-    
+
     public void onDeleteButton(ActionEvent actionEvent) {
         nodeArray.clear();
         updateListView();
@@ -110,7 +118,8 @@ public class Controller {
             if (getIndexInArray(nodeDestiny) < 0) {
                 popupSet("Your Destiny doesn't exists (" + nodeDestiny + ")");
             } else {
-                calculateText.setText(Dijkstra.calculateShortestPathFromSource(graph, nodeArray.get(getIndexInArray(nodeDestiny))).toString());
+                calculateText.setText("Using Node: " + nodeDestiny + "\n" +
+                        "Distances are: " + Dijkstra.calculateShortestPath(graph, nodeArray.get(getIndexInArray(nodeDestiny))).toString());
                 calculateDestiny.setText("");
             }
         } catch (Exception e) {
